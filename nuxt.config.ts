@@ -1,8 +1,6 @@
 export default defineNuxtConfig({
   modules: ['@nuxtjs/tailwindcss'],
 
-  css: ['flag-icons/css/flag-icons.min.css'],
-
   runtimeConfig: {
     footballApiKey: process.env.FOOTBALL_API_KEY,
     public: {}
@@ -14,6 +12,12 @@ export default defineNuxtConfig({
       meta: [
         { charset: 'utf-8' },
         { name: 'viewport', content: 'width=device-width, initial-scale=1' }
+      ],
+      link: [
+        {
+          rel: 'stylesheet',
+          href: 'https://cdn.jsdelivr.net/npm/flag-icons@7.3.2/css/flag-icons.min.css'
+        }
       ]
     }
   },
