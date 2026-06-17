@@ -33,7 +33,7 @@ function score(match: Match): string {
 
     <!-- Live matches -->
     <div v-if="liveMatches.length > 0">
-      <h2 class="text-sm font-bold text-slate-400 uppercase tracking-widest mb-3 flex items-center gap-2">
+      <h2 class="text-xl font-bold text-white mb-4 flex items-center gap-2">
         <span class="w-2 h-2 rounded-full bg-wc-red animate-pulse inline-block"></span>
         Live acum
       </h2>
@@ -80,7 +80,7 @@ function score(match: Match): string {
 
     <!-- Rest of today -->
     <div>
-      <h2 class="text-sm font-bold text-slate-400 uppercase tracking-widest mb-3 flex items-center gap-2">
+      <h2 class="text-xl font-bold text-white mb-4 flex items-center gap-2">
         <span class="w-2 h-2 rounded-full bg-blue-400 inline-block"></span>
         Programul zilei
       </h2>
