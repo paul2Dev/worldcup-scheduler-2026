@@ -47,25 +47,25 @@ function groupByDate(matches: Match[]): { date: string; label: string; items: Ma
           <div
             v-for="match in group.items"
             :key="match.id"
-            class="bg-wc-card border border-wc-border rounded-xl px-4 py-3 flex items-center justify-between gap-4"
+            class="bg-wc-card border border-wc-border rounded-xl px-3 py-3 flex items-center gap-2"
           >
             <!-- Home -->
-            <div class="flex items-center gap-2 flex-1 justify-end">
-              <span class="text-white text-sm font-semibold text-right">{{ match.homeTeam.shortName }}</span>
-              <span :class="`fi fi-${countryCode(match.homeTeam)} text-2xl rounded`"></span>
+            <div class="flex items-center gap-1.5 flex-1 justify-end min-w-0">
+              <span class="text-white text-sm font-semibold text-right truncate">{{ match.homeTeam.shortName }}</span>
+              <span :class="`fi fi-${countryCode(match.homeTeam)} text-xl rounded flex-shrink-0`"></span>
             </div>
 
             <!-- Time -->
-            <div class="flex flex-col items-center min-w-[100px]">
-              <span v-if="soonLabel(match)" class="text-xs font-bold text-wc-gold mb-0.5">{{ soonLabel(match) }}</span>
-              <span class="text-slate-300 text-sm font-mono">{{ formatMatchTime(match.utcDate) }}</span>
+            <div class="flex flex-col items-center flex-shrink-0 w-24">
+              <span v-if="soonLabel(match)" class="text-xs font-bold text-wc-gold mb-0.5 whitespace-nowrap">{{ soonLabel(match) }}</span>
+              <span class="text-slate-300 text-sm font-mono whitespace-nowrap">{{ formatMatchTime(match.utcDate) }}</span>
               <span v-if="match.group" class="text-xs text-slate-500 mt-0.5">{{ match.group }}</span>
             </div>
 
             <!-- Away -->
-            <div class="flex items-center gap-2 flex-1 justify-start">
-              <span :class="`fi fi-${countryCode(match.awayTeam)} text-2xl rounded`"></span>
-              <span class="text-white text-sm font-semibold">{{ match.awayTeam.shortName }}</span>
+            <div class="flex items-center gap-1.5 flex-1 justify-start min-w-0">
+              <span :class="`fi fi-${countryCode(match.awayTeam)} text-xl rounded flex-shrink-0`"></span>
+              <span class="text-white text-sm font-semibold truncate">{{ match.awayTeam.shortName }}</span>
             </div>
           </div>
         </div>

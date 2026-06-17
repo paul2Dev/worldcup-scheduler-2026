@@ -97,23 +97,26 @@ function score(match: Match): string {
         <div
           v-for="match in otherMatches"
           :key="match.id"
-          class="bg-wc-card border border-wc-border rounded-xl px-4 py-3 flex items-center justify-between gap-4"
+          class="bg-wc-card border border-wc-border rounded-xl px-3 py-3 flex items-center gap-2"
         >
-          <div class="flex items-center gap-2 flex-1 justify-end">
-            <span class="text-white font-semibold text-sm text-right">{{ match.homeTeam.shortName }}</span>
-            <span :class="`fi fi-${countryCode(match.homeTeam)} text-2xl rounded`"></span>
+          <!-- Home -->
+          <div class="flex items-center gap-1.5 flex-1 justify-end min-w-0">
+            <span class="text-white font-semibold text-sm text-right truncate">{{ match.homeTeam.shortName }}</span>
+            <span :class="`fi fi-${countryCode(match.homeTeam)} text-xl rounded flex-shrink-0`"></span>
           </div>
 
-          <div class="flex flex-col items-center gap-1 min-w-[90px]">
-            <span :class="`text-xs font-bold px-2 py-0.5 rounded-full text-white ${timeLabel(match).class}`">
+          <!-- Time / Score -->
+          <div class="flex flex-col items-center gap-1 flex-shrink-0 w-24">
+            <span :class="`text-xs font-bold px-2 py-0.5 rounded-full text-white whitespace-nowrap ${timeLabel(match).class}`">
               {{ timeLabel(match).text }}
             </span>
-            <span class="text-white font-bold text-lg tracking-widest">{{ score(match) }}</span>
+            <span class="text-white font-bold text-base tracking-widest">{{ score(match) }}</span>
           </div>
 
-          <div class="flex items-center gap-2 flex-1 justify-start">
-            <span :class="`fi fi-${countryCode(match.awayTeam)} text-2xl rounded`"></span>
-            <span class="text-white font-semibold text-sm">{{ match.awayTeam.shortName }}</span>
+          <!-- Away -->
+          <div class="flex items-center gap-1.5 flex-1 justify-start min-w-0">
+            <span :class="`fi fi-${countryCode(match.awayTeam)} text-xl rounded flex-shrink-0`"></span>
+            <span class="text-white font-semibold text-sm truncate">{{ match.awayTeam.shortName }}</span>
           </div>
         </div>
       </div>

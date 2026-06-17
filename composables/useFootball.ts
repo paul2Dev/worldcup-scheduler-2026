@@ -133,8 +133,7 @@ export function useFootball() {
   function formatMatchTime(utcDate: string): string {
     return new Intl.DateTimeFormat(undefined, {
       hour: '2-digit',
-      minute: '2-digit',
-      timeZoneName: 'short'
+      minute: '2-digit'
     }).format(new Date(utcDate))
   }
 

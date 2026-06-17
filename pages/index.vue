@@ -101,13 +101,13 @@ function formatTime(d: Date): string {
           </div>
         </div>
 
-        <nav v-if="!error" class="flex gap-1 pb-0">
+        <nav v-if="!error" class="flex gap-1 pb-0 overflow-x-auto scrollbar-none">
           <button
             v-for="tab in tabs"
             :key="tab.id"
             @click="activeTab = tab.id"
             :class="[
-              'relative px-4 py-2.5 text-sm font-medium rounded-t-lg transition-colors',
+              'relative px-3 py-2 sm:px-4 sm:py-2.5 text-sm font-medium rounded-t-lg transition-colors whitespace-nowrap flex-shrink-0',
               activeTab === tab.id
                 ? 'bg-wc-dark text-white'
                 : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'
