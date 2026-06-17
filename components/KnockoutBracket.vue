@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { Match } from '~/composables/useFootball'
 
-const { formatMatchDate, formatMatchTime, countryCode } = useFootball()
+const { formatMatchDate, formatMatchTime } = useFootball()
 
 const props = defineProps<{ matches: Match[] }>()
 
@@ -79,7 +79,7 @@ function isDraw(match: Match): boolean {
                 isWinner(match, 'home') ? 'bg-slate-700/60' : ''
               ]"
             >
-              <span :class="`fi fi-${countryCode(match.homeTeam)} text-xl rounded flex-shrink-0`"></span>
+              <FlagIcon :team="match.homeTeam" />
               <span
                 :class="[
                   'text-sm flex-1 truncate',
@@ -105,7 +105,7 @@ function isDraw(match: Match): boolean {
                 isWinner(match, 'away') ? 'bg-slate-700/60' : ''
               ]"
             >
-              <span :class="`fi fi-${countryCode(match.awayTeam)} text-xl rounded flex-shrink-0`"></span>
+              <FlagIcon :team="match.awayTeam" />
               <span
                 :class="[
                   'text-sm flex-1 truncate',

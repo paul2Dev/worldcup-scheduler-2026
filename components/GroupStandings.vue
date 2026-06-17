@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import type { Standing } from '~/composables/useFootball'
 
-const { countryCode } = useFootball()
-
 defineProps<{ standings: Standing[] }>()
 </script>
 
@@ -52,7 +50,7 @@ defineProps<{ standings: Standing[] }>()
               <td class="px-3 py-2 text-slate-400">{{ entry.position }}</td>
               <td class="px-2 py-2">
                 <div class="flex items-center gap-1.5">
-                  <span :class="`fi fi-${countryCode(entry.team)} text-base rounded`"></span>
+                  <FlagIcon :team="entry.team" />
                   <span class="text-white">{{ entry.team.tla }}</span>
                 </div>
               </td>

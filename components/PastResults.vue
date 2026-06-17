@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { Match } from '~/composables/useFootball'
 
-const { formatMatchDate, countryCode } = useFootball()
+const { formatMatchDate } = useFootball()
 
 defineProps<{ matches: Match[] }>()
 
@@ -43,7 +43,7 @@ function isWinner(match: Match, side: 'home' | 'away'): boolean {
           >
             {{ match.homeTeam.shortName }}
           </span>
-          <span :class="`fi fi-${countryCode(match.homeTeam)} text-2xl rounded`"></span>
+          <FlagIcon :team="match.homeTeam" />
         </div>
 
         <!-- Score -->
@@ -54,7 +54,7 @@ function isWinner(match: Match, side: 'home' | 'away'): boolean {
 
         <!-- Away -->
         <div class="flex items-center gap-2 flex-1 justify-start">
-          <span :class="`fi fi-${countryCode(match.awayTeam)} text-2xl rounded`"></span>
+          <FlagIcon :team="match.awayTeam" />
           <span
             :class="['text-sm font-semibold', isWinner(match, 'away') ? 'text-white' : 'text-slate-400']"
           >

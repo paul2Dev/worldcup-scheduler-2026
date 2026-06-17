@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { Match } from '~/composables/useFootball'
 
-const { formatMatchDate, formatMatchTime, minutesUntil, countryCode } = useFootball()
+const { formatMatchDate, formatMatchTime, minutesUntil } = useFootball()
 
 defineProps<{ matches: Match[] }>()
 
@@ -52,7 +52,7 @@ function groupByDate(matches: Match[]): { date: string; label: string; items: Ma
             <!-- Home -->
             <div class="flex items-center gap-1.5 flex-1 justify-end min-w-0">
               <span class="text-white text-sm font-semibold text-right truncate">{{ match.homeTeam.shortName }}</span>
-              <span :class="`fi fi-${countryCode(match.homeTeam)} text-xl rounded flex-shrink-0`"></span>
+              <FlagIcon :team="match.homeTeam" />
             </div>
 
             <!-- Time -->
@@ -64,7 +64,7 @@ function groupByDate(matches: Match[]): { date: string; label: string; items: Ma
 
             <!-- Away -->
             <div class="flex items-center gap-1.5 flex-1 justify-start min-w-0">
-              <span :class="`fi fi-${countryCode(match.awayTeam)} text-xl rounded flex-shrink-0`"></span>
+              <FlagIcon :team="match.awayTeam" />
               <span class="text-white text-sm font-semibold truncate">{{ match.awayTeam.shortName }}</span>
             </div>
           </div>

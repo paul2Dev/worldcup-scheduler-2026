@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { Match } from '~/composables/useFootball'
 
-const { formatMatchTime, minutesUntil, countryCode } = useFootball()
+const { formatMatchTime, minutesUntil } = useFootball()
 
 const props = defineProps<{ matches: Match[] }>()
 
@@ -54,7 +54,7 @@ function score(match: Match): string {
 
           <div class="flex items-center justify-between gap-4">
             <div class="flex flex-col items-center gap-2 flex-1">
-              <span :class="`fi fi-${countryCode(match.homeTeam)} text-5xl rounded-lg`"></span>
+              <FlagIcon :team="match.homeTeam" size="lg" />
               <span class="text-white font-semibold text-sm text-center">{{ match.homeTeam.shortName }}</span>
             </div>
 
@@ -68,7 +68,7 @@ function score(match: Match): string {
             </div>
 
             <div class="flex flex-col items-center gap-2 flex-1">
-              <span :class="`fi fi-${countryCode(match.awayTeam)} text-5xl rounded-lg`"></span>
+              <FlagIcon :team="match.awayTeam" size="lg" />
               <span class="text-white font-semibold text-sm text-center">{{ match.awayTeam.shortName }}</span>
             </div>
           </div>
@@ -102,7 +102,7 @@ function score(match: Match): string {
           <!-- Home -->
           <div class="flex items-center gap-1.5 flex-1 justify-end min-w-0">
             <span class="text-white font-semibold text-sm text-right truncate">{{ match.homeTeam.shortName }}</span>
-            <span :class="`fi fi-${countryCode(match.homeTeam)} text-xl rounded flex-shrink-0`"></span>
+            <FlagIcon :team="match.homeTeam" />
           </div>
 
           <!-- Time / Score -->
@@ -115,7 +115,7 @@ function score(match: Match): string {
 
           <!-- Away -->
           <div class="flex items-center gap-1.5 flex-1 justify-start min-w-0">
-            <span :class="`fi fi-${countryCode(match.awayTeam)} text-xl rounded flex-shrink-0`"></span>
+            <FlagIcon :team="match.awayTeam" />
             <span class="text-white font-semibold text-sm truncate">{{ match.awayTeam.shortName }}</span>
           </div>
         </div>
