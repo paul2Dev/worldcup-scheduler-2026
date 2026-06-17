@@ -77,7 +77,11 @@ function formatTime(d: Date): string {
       <div class="max-w-5xl mx-auto px-4">
         <div class="flex items-center justify-between py-3">
           <div class="flex items-center gap-3">
-            <span class="text-2xl">⚽</span>
+            <img
+              src="https://crests.football-data.org/wm26.png"
+              alt="World Cup 2026"
+              class="w-10 h-10 object-contain"
+            />
             <div>
               <h1 class="font-bold text-white leading-none">World Cup 2026</h1>
               <p class="text-xs text-slate-400">Dashboard live</p>
