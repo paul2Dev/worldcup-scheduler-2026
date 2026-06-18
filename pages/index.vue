@@ -2,6 +2,7 @@
 const {
   fetchAllMatches,
   fetchStandings,
+  fetchScorers,
   filterLive,
   filterToday,
   filterUpcoming,
@@ -21,12 +22,18 @@ const { data: standingsResp, refresh: refreshStandings, error: standingsError } 
   { server: false, lazy: true }
 )
 
+const { data: scorersResp, refresh: refreshScorers } = useAsyncData(
+  'scorers',
+  () => fetchScorers(),
+  { server: false, lazy: true }
+)
+
 const lastUpdated = ref<Date>(new Date())
 const refreshing = ref(false)
 
 async function loadAll() {
   refreshing.value = true
-  await Promise.all([refreshMatches(), refreshStandings()])
+  await Promise.all([refreshMatches(), refreshStandings(), refreshScorers()])
   lastUpdated.value = new Date()
   refreshing.value = false
 }
@@ -46,6 +53,7 @@ const upcomingMatches = computed(() => filterUpcoming(allMatches.value))
 const pastMatches = computed(() => filterPast(allMatches.value))
 const knockoutMatches = computed(() => filterKnockout(allMatches.value))
 const standings = computed(() => standingsResp.value?.standings ?? [])
+const scorers = computed(() => scorersResp.value?.scorers ?? [])
 
 const error = computed(() => {
   const raw = matchesError.value?.message ?? standingsError.value?.message ?? null
@@ -61,6 +69,7 @@ const tabs = [
   { id: 'results', label: 'Rezultate', badge: null, pulse: false },
   { id: 'standings', label: 'Grupe', badge: null, pulse: false },
   { id: 'bracket', label: 'Bracket', badge: null, pulse: false },
+  { id: 'scorers', label: 'Marcatori', badge: null, pulse: false },
 ]
 
 const activeTab = ref('today')
@@ -101,19 +110,19 @@ function formatTime(d: Date): string {
           </div>
         </div>
 
-        <nav v-if="!error" class="flex gap-1 pb-0 overflow-x-auto scrollbar-none">
+        <nav v-if="!error" class="grid grid-cols-3 sm:flex gap-1 pb-0">
           <button
             v-for="tab in tabs"
             :key="tab.id"
             @click="activeTab = tab.id"
             :class="[
-              'relative px-3 py-2 sm:px-4 sm:py-2.5 text-sm font-medium rounded-t-lg transition-colors whitespace-nowrap flex-shrink-0',
+              'relative px-2 py-2 sm:px-4 sm:py-2.5 text-xs sm:text-sm font-medium rounded-lg sm:rounded-b-none sm:whitespace-nowrap transition-colors',
               activeTab === tab.id
                 ? 'bg-wc-dark text-white'
                 : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'
             ]"
           >
-            <span class="flex items-center gap-1.5">
+            <span class="flex items-center justify-center gap-1.5">
               <span
                 v-if="tab.pulse && tab.badge && tab.badge.value > 0"
                 class="w-1.5 h-1.5 rounded-full bg-wc-red animate-pulse inline-block"
@@ -149,6 +158,7 @@ function formatTime(d: Date): string {
         <PastResults v-show="activeTab === 'results'" :matches="pastMatches" />
         <GroupStandings v-show="activeTab === 'standings'" :standings="standings" />
         <KnockoutBracket v-show="activeTab === 'bracket'" :matches="knockoutMatches" />
+        <TopScorers v-show="activeTab === 'scorers'" :scorers="scorers" />
       </template>
     </main>
   </div>

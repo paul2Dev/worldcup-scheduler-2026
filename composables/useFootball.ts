@@ -45,6 +45,20 @@ export interface Standing {
   table: StandingEntry[]
 }
 
+export interface Scorer {
+  player: {
+    id: number
+    name: string
+    nationality: string
+    position: string | null
+    dateOfBirth: string
+  }
+  team: Team
+  goals: number
+  assists: number | null
+  penalties: number | null
+}
+
 const TLA_TO_ISO: Record<string, string> = {
   // Americas
   ARG: 'ar', BRA: 'br', URU: 'uy', COL: 'co', CHI: 'cl', CHL: 'cl',
@@ -88,6 +102,10 @@ export function useFootball() {
 
   async function fetchStandings() {
     return await $fetch<{ standings: Standing[] }>('/api/standings')
+  }
+
+  async function fetchScorers() {
+    return await $fetch<{ scorers: Scorer[] }>('/api/scorers')
   }
 
   function localDateStr(utcDate: string): string {
@@ -162,6 +180,7 @@ export function useFootball() {
   return {
     fetchAllMatches,
     fetchStandings,
+    fetchScorers,
     filterLive,
     filterToday,
     filterUpcoming,
