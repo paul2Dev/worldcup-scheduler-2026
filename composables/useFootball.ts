@@ -23,6 +23,7 @@ export interface Match {
   homeTeam: Team
   awayTeam: Team
   score: Score
+  goals?: Goal[]
 }
 
 export interface StandingEntry {
@@ -43,6 +44,15 @@ export interface Standing {
   type: string
   group: string
   table: StandingEntry[]
+}
+
+export interface Goal {
+  minute: number
+  injuryTime: number | null
+  type: 'REGULAR' | 'OWN_GOAL' | 'PENALTY'
+  team: { id: number; name: string }
+  scorer: { id: number; name: string }
+  assist: { id: number; name: string } | null
 }
 
 export interface Scorer {
