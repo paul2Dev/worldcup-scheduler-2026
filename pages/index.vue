@@ -9,16 +9,16 @@ const {
   filterKnockout
 } = useFootball()
 
-const { data: matchesResp, refresh: refreshMatches, error: matchesError } = await useAsyncData(
+const { data: matchesResp, refresh: refreshMatches, error: matchesError } = useAsyncData(
   'matches',
   () => fetchAllMatches(),
-  { server: true }
+  { server: false, lazy: true }
 )
 
-const { data: standingsResp, refresh: refreshStandings, error: standingsError } = await useAsyncData(
+const { data: standingsResp, refresh: refreshStandings, error: standingsError } = useAsyncData(
   'standings',
   () => fetchStandings(),
-  { server: true }
+  { server: false, lazy: true }
 )
 
 const lastUpdated = ref<Date>(new Date())
@@ -33,7 +33,6 @@ async function loadAll() {
 
 let interval: ReturnType<typeof setInterval>
 onMounted(() => {
-  loadAll()
   interval = setInterval(loadAll, 60_000)
 })
 onUnmounted(() => {
