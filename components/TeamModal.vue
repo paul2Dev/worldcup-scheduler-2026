@@ -1,13 +1,23 @@
 <script setup lang="ts">
-import type { TeamDetail, Player } from '~/composables/useFootball'
+import type { TeamDetail, Player, Standing } from '~/composables/useFootball'
 
-const props = defineProps<{ teams: TeamDetail[] }>()
+const props = defineProps<{ teams: TeamDetail[]; standings: Standing[] }>()
 
 const { selectedTeamId, closeTeam } = useTeamModal()
 
 const team = computed(() =>
   props.teams.find(t => t.id === selectedTeamId.value) ?? null
 )
+
+const standingEntry = computed(() => {
+  if (!selectedTeamId.value) return null
+  for (const s of props.standings) {
+    if (s.type !== 'TOTAL') continue
+    const entry = s.table.find(e => e.team.id === selectedTeamId.value)
+    if (entry) return { entry, group: s.group }
+  }
+  return null
+})
 
 const positions = ['Goalkeeper', 'Defence', 'Midfield', 'Offence'] as const
 
@@ -114,6 +124,42 @@ onMounted(() => {
                       <span v-if="team.coach.dateOfBirth"> · {{ age(team.coach.dateOfBirth) }} ani</span>
                     </p>
                   </div>
+                </div>
+              </div>
+
+              <!-- Standing stats -->
+              <div v-if="standingEntry">
+                <p class="text-xs text-slate-500 uppercase tracking-widest mb-2">
+                  {{ standingEntry.group }} · Locul {{ standingEntry.entry.position }}
+                </p>
+                <div class="grid grid-cols-4 gap-2">
+                  <div class="bg-slate-800/50 rounded-xl px-3 py-2.5 text-center">
+                    <p class="text-wc-gold font-black text-xl">{{ standingEntry.entry.points }}</p>
+                    <p class="text-slate-500 text-xs mt-0.5">Pct</p>
+                  </div>
+                  <div class="bg-slate-800/50 rounded-xl px-3 py-2.5 text-center">
+                    <p class="text-white font-bold text-xl">{{ standingEntry.entry.playedGames }}</p>
+                    <p class="text-slate-500 text-xs mt-0.5">Jucate</p>
+                  </div>
+                  <div class="bg-slate-800/50 rounded-xl px-3 py-2.5 text-center">
+                    <p class="text-green-400 font-bold text-xl">{{ standingEntry.entry.goalsFor }}</p>
+                    <p class="text-slate-500 text-xs mt-0.5">Marcate</p>
+                  </div>
+                  <div class="bg-slate-800/50 rounded-xl px-3 py-2.5 text-center">
+                    <p class="text-red-400 font-bold text-xl">{{ standingEntry.entry.goalsAgainst }}</p>
+                    <p class="text-slate-500 text-xs mt-0.5">Primite</p>
+                  </div>
+                </div>
+                <div class="flex gap-2 mt-2 text-xs text-slate-400 justify-center">
+                  <span class="text-green-400">{{ standingEntry.entry.won }}V</span>
+                  <span>·</span>
+                  <span>{{ standingEntry.entry.draw }}E</span>
+                  <span>·</span>
+                  <span class="text-red-400">{{ standingEntry.entry.lost }}Î</span>
+                  <span>·</span>
+                  <span>
+                    GD {{ standingEntry.entry.goalDifference > 0 ? '+' : '' }}{{ standingEntry.entry.goalDifference }}
+                  </span>
                 </div>
               </div>
 

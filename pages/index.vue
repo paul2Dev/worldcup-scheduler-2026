@@ -171,5 +171,5 @@ function formatTime(d: Date): string {
     </main>
   </div>
 
-  <TeamModal :teams="teams" />
+  <TeamModal :teams="teams" :standings="standings" />
 </template>

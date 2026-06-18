@@ -84,6 +84,7 @@ export interface Scorer {
     dateOfBirth: string
   }
   team: Team
+  playedMatches: number
   goals: number
   assists: number | null
   penalties: number | null

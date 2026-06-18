@@ -4,9 +4,15 @@ import type { Scorer } from '~/composables/useFootball'
 defineProps<{ scorers: Scorer[] }>()
 
 const { countryCode } = useFootball()
+const { openTeam } = useTeamModal()
 
 function flagCode(scorer: Scorer): string {
   return countryCode(scorer.team)
+}
+
+function goalsPerMatch(scorer: Scorer): string {
+  if (!scorer.playedMatches) return '—'
+  return (scorer.goals / scorer.playedMatches).toFixed(2)
 }
 </script>
 
@@ -31,6 +37,7 @@ function flagCode(scorer: Scorer): string {
             <th class="text-center px-3 py-3 text-wc-gold font-bold">G</th>
             <th class="text-center px-3 py-3">A</th>
             <th class="text-center px-3 py-3 hidden sm:table-cell">Pen.</th>
+            <th class="text-center px-3 py-3 text-slate-500">G/M</th>
           </tr>
         </thead>
         <tbody>
@@ -47,10 +54,13 @@ function flagCode(scorer: Scorer): string {
               </div>
             </td>
             <td class="px-2 py-3 hidden sm:table-cell">
-              <div class="flex items-center gap-1.5 text-slate-400 text-xs">
+              <button
+                class="flex items-center gap-1.5 text-slate-400 text-xs hover:text-slate-200 transition-colors"
+                @click="openTeam(scorer.team.id)"
+              >
                 <img :src="scorer.team.crest" :alt="scorer.team.shortName" class="w-4 h-4 object-contain" />
                 {{ scorer.team.shortName }}
-              </div>
+              </button>
             </td>
             <td class="px-3 py-3 text-center">
               <span class="text-wc-gold font-black text-base">{{ scorer.goals }}</span>
@@ -61,11 +71,16 @@ function flagCode(scorer: Scorer): string {
             <td class="px-3 py-3 text-center text-slate-400 hidden sm:table-cell text-xs">
               {{ scorer.penalties ?? 0 }}
             </td>
+            <td class="px-3 py-3 text-center text-slate-500 text-xs font-mono">
+              {{ goalsPerMatch(scorer) }}
+            </td>
           </tr>
         </tbody>
       </table>
     </div>
 
-    <p class="text-xs text-slate-600 mt-3 text-center">G = goluri &nbsp;·&nbsp; A = assist-uri &nbsp;·&nbsp; Pen. = penalty-uri marcate</p>
+    <p class="text-xs text-slate-600 mt-3 text-center">
+      G = goluri &nbsp;·&nbsp; A = assist-uri &nbsp;·&nbsp; Pen. = penalty-uri marcate &nbsp;·&nbsp; G/M = goluri per meci
+    </p>
   </section>
 </template>
