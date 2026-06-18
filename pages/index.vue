@@ -72,12 +72,13 @@ const error = computed(() => {
 })
 
 const tabs = [
-  { id: 'today', label: 'Azi', badge: computed(() => liveMatches.value.length), pulse: true },
-  { id: 'upcoming', label: 'Viitoare', badge: null, pulse: false },
-  { id: 'results', label: 'Rezultate', badge: null, pulse: false },
-  { id: 'standings', label: 'Grupe', badge: null, pulse: false },
-  { id: 'bracket', label: 'Bracket', badge: null, pulse: false },
-  { id: 'scorers', label: 'Marcatori', badge: null, pulse: false },
+  { id: 'today',    label: 'Azi',        shortLabel: 'Azi',    badge: computed(() => liveMatches.value.length), pulse: true },
+  { id: 'upcoming', label: 'Viitoare',   shortLabel: 'Viit.',  badge: null, pulse: false },
+  { id: 'results',  label: 'Rezultate',  shortLabel: 'Rez.',   badge: null, pulse: false },
+  { id: 'standings',label: 'Grupe',      shortLabel: 'Grupe',  badge: null, pulse: false },
+  { id: 'bracket',  label: 'Bracket',    shortLabel: 'Cup',    badge: null, pulse: false },
+  { id: 'scorers',  label: 'Marcatori',  shortLabel: 'Top G.', badge: null, pulse: false },
+  { id: 'stats',    label: 'Statistici', shortLabel: 'Stats',  badge: null, pulse: false },
 ]
 
 const activeTab = ref('today')
@@ -118,7 +119,7 @@ function formatTime(d: Date): string {
           </div>
         </div>
 
-        <nav v-if="!error" class="grid grid-cols-3 sm:flex gap-1 pb-0">
+        <nav v-if="!error" class="grid grid-cols-4 sm:flex gap-1 pb-0">
           <button
             v-for="tab in tabs"
             :key="tab.id"
@@ -135,7 +136,8 @@ function formatTime(d: Date): string {
                 v-if="tab.pulse && tab.badge && tab.badge.value > 0"
                 class="w-1.5 h-1.5 rounded-full bg-wc-red animate-pulse inline-block"
               ></span>
-              {{ tab.label }}
+              <span class="sm:hidden">{{ 'shortLabel' in tab ? tab.shortLabel : tab.label }}</span>
+              <span class="hidden sm:inline">{{ tab.label }}</span>
               <span
                 v-if="tab.badge && tab.badge.value > 0"
                 :class="['text-white text-xs font-bold px-1.5 py-0.5 rounded-full', tab.pulse ? 'bg-wc-red' : 'bg-slate-600']"
@@ -167,6 +169,7 @@ function formatTime(d: Date): string {
         <GroupStandings v-show="activeTab === 'standings'" :standings="standings" />
         <KnockoutBracket v-show="activeTab === 'bracket'" :matches="knockoutMatches" />
         <TopScorers v-show="activeTab === 'scorers'" :scorers="scorers" />
+        <TournamentStats v-show="activeTab === 'stats'" :matches="allMatches" :standings="standings" />
       </template>
     </main>
   </div>
