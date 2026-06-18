@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { Match, Goal } from '~/composables/useFootball'
+import type { Match } from '~/composables/useFootball'
 
 const { formatMatchTime, minutesUntil } = useFootball()
 
@@ -25,32 +25,6 @@ function score(match: Match): string {
   const a = match.score.fullTime.away
   if (h === null || a === null) return 'vs'
   return `${h} – ${a}`
-}
-
-function homeGoals(match: Match): Goal[] {
-  return (match.goals ?? [])
-    .filter(g => g.team.id === match.homeTeam.id)
-    .sort((a, b) => a.minute - b.minute)
-}
-
-function awayGoals(match: Match): Goal[] {
-  return (match.goals ?? [])
-    .filter(g => g.team.id === match.awayTeam.id)
-    .sort((a, b) => a.minute - b.minute)
-}
-
-function goalLabel(g: Goal): string {
-  const lastName = g.scorer.name.split(' ').slice(-1)[0]
-  const min = g.injuryTime ? `${g.minute}+${g.injuryTime}'` : `${g.minute}'`
-  if (g.type === 'OWN_GOAL') return `${lastName} ${min} (ag)`
-  if (g.type === 'PENALTY') return `${lastName} ${min} (p)`
-  return `${lastName} ${min}`
-}
-
-function allGoalsSorted(match: Match): (Goal & { side: 'home' | 'away' })[] {
-  return (match.goals ?? [])
-    .map(g => ({ ...g, side: g.team.id === match.homeTeam.id ? 'home' as const : 'away' as const }))
-    .sort((a, b) => a.minute - b.minute)
 }
 </script>
 
@@ -99,32 +73,6 @@ function allGoalsSorted(match: Match): (Goal & { side: 'home' | 'away' })[] {
             </div>
           </div>
 
-          <!-- Goalscorers -->
-          <div v-if="(match.goals ?? []).length > 0" class="mt-4 pt-4 border-t border-wc-border/50">
-            <div class="flex gap-2">
-              <!-- Home goals -->
-              <div class="flex-1 flex flex-col items-start gap-1">
-                <span
-                  v-for="g in homeGoals(match)"
-                  :key="`h-${g.minute}-${g.scorer.id}`"
-                  class="text-xs text-slate-300"
-                >
-                  ⚽ {{ goalLabel(g) }}
-                </span>
-              </div>
-              <!-- Away goals -->
-              <div class="flex-1 flex flex-col items-end gap-1">
-                <span
-                  v-for="g in awayGoals(match)"
-                  :key="`a-${g.minute}-${g.scorer.id}`"
-                  class="text-xs text-slate-300"
-                >
-                  {{ goalLabel(g) }} ⚽
-                </span>
-              </div>
-            </div>
-          </div>
-
           <div v-if="match.group" class="text-center text-xs text-slate-500 mt-3">{{ match.group }}</div>
         </div>
       </div>
@@ -149,41 +97,26 @@ function allGoalsSorted(match: Match): (Goal & { side: 'home' | 'away' })[] {
         <div
           v-for="match in otherMatches"
           :key="match.id"
-          class="bg-wc-card border border-wc-border rounded-xl px-3 py-3"
+          class="bg-wc-card border border-wc-border rounded-xl px-3 py-3 flex items-center gap-2"
         >
-          <div class="flex items-center gap-2">
-            <!-- Home -->
-            <div class="flex items-center gap-1.5 flex-1 justify-end min-w-0">
-              <span class="text-white font-semibold text-sm text-right truncate">{{ match.homeTeam.shortName }}</span>
-              <FlagIcon :team="match.homeTeam" />
-            </div>
-
-            <!-- Time / Score -->
-            <div class="flex flex-col items-center gap-1 flex-shrink-0 w-24">
-              <span :class="`text-xs font-bold px-2 py-0.5 rounded-full text-white whitespace-nowrap ${timeLabel(match).class}`">
-                {{ timeLabel(match).text }}
-              </span>
-              <span class="text-white font-bold text-base tracking-widest">{{ score(match) }}</span>
-            </div>
-
-            <!-- Away -->
-            <div class="flex items-center gap-1.5 flex-1 justify-start min-w-0">
-              <FlagIcon :team="match.awayTeam" />
-              <span class="text-white font-semibold text-sm truncate">{{ match.awayTeam.shortName }}</span>
-            </div>
+          <!-- Home -->
+          <div class="flex items-center gap-1.5 flex-1 justify-end min-w-0">
+            <span class="text-white font-semibold text-sm text-right truncate">{{ match.homeTeam.shortName }}</span>
+            <FlagIcon :team="match.homeTeam" />
           </div>
 
-          <!-- Goalscorers for finished matches -->
-          <div v-if="match.status === 'FINISHED' && (match.goals ?? []).length > 0" class="mt-2 pt-2 border-t border-wc-border/40">
-            <div class="flex gap-4 text-xs text-slate-400">
-              <span class="flex-1 text-right">
-                {{ homeGoals(match).map(goalLabel).join(', ') }}
-              </span>
-              <span class="flex-shrink-0 w-4"></span>
-              <span class="flex-1 text-left">
-                {{ awayGoals(match).map(goalLabel).join(', ') }}
-              </span>
-            </div>
+          <!-- Time / Score -->
+          <div class="flex flex-col items-center gap-1 flex-shrink-0 w-24">
+            <span :class="`text-xs font-bold px-2 py-0.5 rounded-full text-white whitespace-nowrap ${timeLabel(match).class}`">
+              {{ timeLabel(match).text }}
+            </span>
+            <span class="text-white font-bold text-base tracking-widest">{{ score(match) }}</span>
+          </div>
+
+          <!-- Away -->
+          <div class="flex items-center gap-1.5 flex-1 justify-start min-w-0">
+            <FlagIcon :team="match.awayTeam" />
+            <span class="text-white font-semibold text-sm truncate">{{ match.awayTeam.shortName }}</span>
           </div>
         </div>
       </div>
