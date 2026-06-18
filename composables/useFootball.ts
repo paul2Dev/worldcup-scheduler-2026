@@ -51,7 +51,7 @@ const TLA_TO_ISO: Record<string, string> = {
   PER: 'pe', VEN: 've', PAR: 'py', BOL: 'bo', ECU: 'ec',
   USA: 'us', CAN: 'ca', MEX: 'mx', CRC: 'cr', PAN: 'pa',
   HON: 'hn', JAM: 'jm', TTO: 'tt', HAI: 'ht', SLV: 'sv',
-  GTM: 'gt', CUB: 'cu', NCA: 'ni',
+  GTM: 'gt', CUB: 'cu', NCA: 'ni', CUW: 'cw',
   // Europe
   ESP: 'es', FRA: 'fr', GER: 'de', ITA: 'it', POR: 'pt',
   NED: 'nl', BEL: 'be', ENG: 'gb-eng', SCO: 'gb-sct', WAL: 'gb-wls',
@@ -151,7 +151,7 @@ export function useFootball() {
 
   function countryCode(team: Team): string {
     if (team.area?.flag) {
-      const m = team.area.flag.match(/\/flags\/([A-Za-z-]+)\.svg$/i)
+      const m = team.area.flag.match(/\/([A-Za-z-]+)\.svg/i)
       if (m) return m[1].toLowerCase()
     }
     const iso = TLA_TO_ISO[team.tla?.toUpperCase()]
