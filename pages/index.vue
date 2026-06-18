@@ -72,13 +72,13 @@ const error = computed(() => {
 })
 
 const tabs = [
-  { id: 'today',    label: 'Azi',        shortLabel: 'Azi',    badge: computed(() => liveMatches.value.length), pulse: true },
-  { id: 'upcoming', label: 'Viitoare',   shortLabel: 'Viit.',  badge: null, pulse: false },
-  { id: 'results',  label: 'Rezultate',  shortLabel: 'Rez.',   badge: null, pulse: false },
-  { id: 'standings',label: 'Grupe',      shortLabel: 'Grupe',  badge: null, pulse: false },
-  { id: 'bracket',  label: 'Bracket',    shortLabel: 'Cup',    badge: null, pulse: false },
-  { id: 'scorers',  label: 'Marcatori',  shortLabel: 'Top G.', badge: null, pulse: false },
-  { id: 'stats',    label: 'Statistici', shortLabel: 'Stats',  badge: null, pulse: false },
+  { id: 'today',     label: 'Azi',        shortLabel: 'Azi',   icon: '⚽', badge: computed(() => liveMatches.value.length), pulse: true },
+  { id: 'upcoming',  label: 'Viitoare',   shortLabel: 'Prog.', icon: '📅', badge: null, pulse: false },
+  { id: 'results',   label: 'Rezultate',  shortLabel: 'Rez.',  icon: '🏁', badge: null, pulse: false },
+  { id: 'standings', label: 'Grupe',      shortLabel: 'Grupe', icon: '📊', badge: null, pulse: false },
+  { id: 'bracket',   label: 'Bracket',    shortLabel: 'Cup',   icon: '🏆', badge: null, pulse: false },
+  { id: 'scorers',   label: 'Marcatori',  shortLabel: 'Top',   icon: '⭐', badge: null, pulse: false },
+  { id: 'stats',     label: 'Statistici', shortLabel: 'Stats', icon: '📈', badge: null, pulse: false },
 ]
 
 const activeTab = ref('today')
@@ -119,28 +119,31 @@ function formatTime(d: Date): string {
           </div>
         </div>
 
-        <nav v-if="!error" class="grid grid-cols-4 sm:flex gap-1 pb-0">
+        <nav v-if="!error" class="flex border-b border-wc-border">
           <button
             v-for="tab in tabs"
             :key="tab.id"
             @click="activeTab = tab.id"
             :class="[
-              'relative px-2 py-2 sm:px-4 sm:py-2.5 text-xs sm:text-sm font-medium rounded-lg sm:rounded-b-none sm:whitespace-nowrap transition-colors',
+              'flex-1 sm:flex-none flex flex-col sm:flex-row items-center justify-center gap-0.5 sm:gap-1.5',
+              'py-2 sm:px-4 sm:py-2.5 font-medium transition-colors',
+              'border-b-2 sm:border-b-0 sm:rounded-t-lg',
               activeTab === tab.id
-                ? 'bg-wc-dark text-white'
-                : 'text-slate-400 hover:text-slate-200 hover:bg-slate-800/50'
+                ? 'text-white border-wc-gold sm:border-transparent sm:bg-wc-dark'
+                : 'text-slate-500 border-transparent hover:text-slate-300 sm:hover:bg-slate-800/50'
             ]"
           >
-            <span class="flex items-center justify-center gap-1.5">
+            <span class="text-base sm:hidden leading-none">{{ tab.icon }}</span>
+            <span class="flex items-center gap-1">
               <span
                 v-if="tab.pulse && tab.badge && tab.badge.value > 0"
-                class="w-1.5 h-1.5 rounded-full bg-wc-red animate-pulse inline-block"
+                class="w-1 h-1 sm:w-1.5 sm:h-1.5 rounded-full bg-wc-red animate-pulse inline-block"
               ></span>
-              <span class="sm:hidden">{{ 'shortLabel' in tab ? tab.shortLabel : tab.label }}</span>
-              <span class="hidden sm:inline">{{ tab.label }}</span>
+              <span class="text-[10px] sm:hidden">{{ tab.shortLabel }}</span>
+              <span class="hidden sm:inline text-sm">{{ tab.label }}</span>
               <span
                 v-if="tab.badge && tab.badge.value > 0"
-                :class="['text-white text-xs font-bold px-1.5 py-0.5 rounded-full', tab.pulse ? 'bg-wc-red' : 'bg-slate-600']"
+                :class="['text-white font-bold rounded-full leading-none px-1 py-0.5', 'text-[9px] sm:text-xs', tab.pulse ? 'bg-wc-red' : 'bg-slate-600']"
               >
                 {{ tab.badge.value }}
               </span>
