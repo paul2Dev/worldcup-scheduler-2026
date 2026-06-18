@@ -3,6 +3,7 @@ const {
   fetchAllMatches,
   fetchStandings,
   fetchScorers,
+  fetchTeams,
   filterLive,
   filterToday,
   filterUpcoming,
@@ -25,6 +26,12 @@ const { data: standingsResp, refresh: refreshStandings, error: standingsError } 
 const { data: scorersResp, refresh: refreshScorers } = useAsyncData(
   'scorers',
   () => fetchScorers(),
+  { server: false, lazy: true }
+)
+
+const { data: teamsResp } = useAsyncData(
+  'teams',
+  () => fetchTeams(),
   { server: false, lazy: true }
 )
 
@@ -54,6 +61,7 @@ const pastMatches = computed(() => filterPast(allMatches.value))
 const knockoutMatches = computed(() => filterKnockout(allMatches.value))
 const standings = computed(() => standingsResp.value?.standings ?? [])
 const scorers = computed(() => scorersResp.value?.scorers ?? [])
+const teams = computed(() => teamsResp.value?.teams ?? [])
 
 const error = computed(() => {
   const raw = matchesError.value?.message ?? standingsError.value?.message ?? null
@@ -162,4 +170,6 @@ function formatTime(d: Date): string {
       </template>
     </main>
   </div>
+
+  <TeamModal :teams="teams" />
 </template>

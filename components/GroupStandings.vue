@@ -2,6 +2,8 @@
 import type { Standing } from '~/composables/useFootball'
 
 defineProps<{ standings: Standing[] }>()
+
+const { openTeam } = useTeamModal()
 </script>
 
 <template>
@@ -43,9 +45,10 @@ defineProps<{ standings: Standing[] }>()
               v-for="(entry, idx) in standing.table"
               :key="entry.team.id"
               :class="[
-                'border-b border-wc-border last:border-0',
+                'border-b border-wc-border last:border-0 cursor-pointer hover:bg-slate-700/40 transition-colors',
                 idx < 2 ? 'bg-slate-800/50' : ''
               ]"
+              @click="openTeam(entry.team.id)"
             >
               <td class="px-3 py-2 text-slate-400">{{ entry.position }}</td>
               <td class="px-2 py-2">

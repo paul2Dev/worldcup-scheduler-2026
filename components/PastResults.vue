@@ -2,6 +2,7 @@
 import type { Match } from '~/composables/useFootball'
 
 const { formatMatchDate } = useFootball()
+const { openTeam } = useTeamModal()
 
 defineProps<{ matches: Match[] }>()
 
@@ -37,14 +38,12 @@ function isWinner(match: Match, side: 'home' | 'away'): boolean {
         class="bg-wc-card border border-wc-border rounded-xl px-4 py-3 flex items-center justify-between gap-4"
       >
         <!-- Home -->
-        <div class="flex items-center gap-2 flex-1 justify-end">
-          <span
-            :class="['text-sm font-semibold text-right', isWinner(match, 'home') ? 'text-white' : 'text-slate-400']"
-          >
+        <button class="flex items-center gap-2 flex-1 justify-end hover:opacity-75 transition-opacity" @click="openTeam(match.homeTeam.id)">
+          <span :class="['text-sm font-semibold text-right', isWinner(match, 'home') ? 'text-white' : 'text-slate-400']">
             {{ match.homeTeam.shortName }}
           </span>
           <FlagIcon :team="match.homeTeam" />
-        </div>
+        </button>
 
         <!-- Score -->
         <div class="flex flex-col items-center min-w-[90px]">
@@ -53,14 +52,12 @@ function isWinner(match: Match, side: 'home' | 'away'): boolean {
         </div>
 
         <!-- Away -->
-        <div class="flex items-center gap-2 flex-1 justify-start">
+        <button class="flex items-center gap-2 flex-1 justify-start hover:opacity-75 transition-opacity" @click="openTeam(match.awayTeam.id)">
           <FlagIcon :team="match.awayTeam" />
-          <span
-            :class="['text-sm font-semibold', isWinner(match, 'away') ? 'text-white' : 'text-slate-400']"
-          >
+          <span :class="['text-sm font-semibold', isWinner(match, 'away') ? 'text-white' : 'text-slate-400']">
             {{ match.awayTeam.shortName }}
           </span>
-        </div>
+        </button>
       </div>
     </div>
   </section>

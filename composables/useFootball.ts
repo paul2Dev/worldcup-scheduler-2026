@@ -45,6 +45,36 @@ export interface Standing {
   table: StandingEntry[]
 }
 
+export interface Player {
+  id: number
+  name: string
+  position: 'Goalkeeper' | 'Defence' | 'Midfield' | 'Offence'
+  dateOfBirth: string
+  nationality: string
+}
+
+export interface Coach {
+  id: number
+  name: string
+  dateOfBirth: string | null
+  nationality: string
+}
+
+export interface TeamDetail {
+  id: number
+  name: string
+  shortName: string
+  tla: string
+  crest: string
+  area: { id: number; name: string; code: string; flag?: string }
+  coach: Coach | null
+  squad: Player[]
+  founded: number | null
+  venue: string | null
+  website: string | null
+  clubColors: string | null
+}
+
 export interface Scorer {
   player: {
     id: number
@@ -106,6 +136,10 @@ export function useFootball() {
 
   async function fetchScorers() {
     return await $fetch<{ scorers: Scorer[] }>('/api/scorers')
+  }
+
+  async function fetchTeams() {
+    return await $fetch<{ teams: TeamDetail[] }>('/api/teams')
   }
 
   function localDateStr(utcDate: string): string {
@@ -181,6 +215,7 @@ export function useFootball() {
     fetchAllMatches,
     fetchStandings,
     fetchScorers,
+    fetchTeams,
     filterLive,
     filterToday,
     filterUpcoming,

@@ -2,6 +2,7 @@
 import type { Match } from '~/composables/useFootball'
 
 const { formatMatchTime, minutesUntil } = useFootball()
+const { openTeam } = useTeamModal()
 
 const props = defineProps<{ matches: Match[] }>()
 
@@ -53,10 +54,10 @@ function score(match: Match): string {
           </div>
 
           <div class="flex items-center justify-between gap-4">
-            <div class="flex flex-col items-center gap-2 flex-1">
+            <button class="flex flex-col items-center gap-2 flex-1 hover:opacity-80 transition-opacity" @click="openTeam(match.homeTeam.id)">
               <FlagIcon :team="match.homeTeam" size="lg" />
               <span class="text-white font-semibold text-sm text-center">{{ match.homeTeam.shortName }}</span>
-            </div>
+            </button>
 
             <div class="flex flex-col items-center min-w-[100px]">
               <span class="text-white font-black text-5xl tracking-widest tabular-nums">
@@ -67,10 +68,10 @@ function score(match: Match): string {
               </span>
             </div>
 
-            <div class="flex flex-col items-center gap-2 flex-1">
+            <button class="flex flex-col items-center gap-2 flex-1 hover:opacity-80 transition-opacity" @click="openTeam(match.awayTeam.id)">
               <FlagIcon :team="match.awayTeam" size="lg" />
               <span class="text-white font-semibold text-sm text-center">{{ match.awayTeam.shortName }}</span>
-            </div>
+            </button>
           </div>
 
           <div v-if="match.group" class="text-center text-xs text-slate-500 mt-3">{{ match.group }}</div>
@@ -100,10 +101,10 @@ function score(match: Match): string {
           class="bg-wc-card border border-wc-border rounded-xl px-3 py-3 flex items-center gap-2"
         >
           <!-- Home -->
-          <div class="flex items-center gap-1.5 flex-1 justify-end min-w-0">
+          <button class="flex items-center gap-1.5 flex-1 justify-end min-w-0 hover:opacity-75 transition-opacity" @click="openTeam(match.homeTeam.id)">
             <span class="text-white font-semibold text-sm text-right truncate">{{ match.homeTeam.shortName }}</span>
             <FlagIcon :team="match.homeTeam" />
-          </div>
+          </button>
 
           <!-- Time / Score -->
           <div class="flex flex-col items-center gap-1 flex-shrink-0 w-24">
@@ -114,10 +115,10 @@ function score(match: Match): string {
           </div>
 
           <!-- Away -->
-          <div class="flex items-center gap-1.5 flex-1 justify-start min-w-0">
+          <button class="flex items-center gap-1.5 flex-1 justify-start min-w-0 hover:opacity-75 transition-opacity" @click="openTeam(match.awayTeam.id)">
             <FlagIcon :team="match.awayTeam" />
             <span class="text-white font-semibold text-sm truncate">{{ match.awayTeam.shortName }}</span>
-          </div>
+          </button>
         </div>
       </div>
     </div>
