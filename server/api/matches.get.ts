@@ -1,4 +1,6 @@
 export default defineEventHandler(async (event) => {
+  setResponseHeader(event, 'Cache-Control', 'no-store')
+
   const config = useRuntimeConfig()
   const query = getQuery(event)
 

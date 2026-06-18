@@ -33,6 +33,7 @@ async function loadAll() {
 
 let interval: ReturnType<typeof setInterval>
 onMounted(() => {
+  loadAll()
   interval = setInterval(loadAll, 60_000)
 })
 onUnmounted(() => {

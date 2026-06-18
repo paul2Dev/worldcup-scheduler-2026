@@ -1,6 +1,11 @@
 export default defineNuxtConfig({
   modules: ['@nuxtjs/tailwindcss'],
 
+  routeRules: {
+    '/': { headers: { 'Cache-Control': 'no-store' } },
+    '/api/**': { headers: { 'Cache-Control': 'no-store' } }
+  },
+
   runtimeConfig: {
     footballApiKey: process.env.FOOTBALL_API_KEY,
     public: {}
