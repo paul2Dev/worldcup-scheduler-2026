@@ -150,12 +150,13 @@ export function useFootball() {
   }
 
   function countryCode(team: Team): string {
+    const iso = TLA_TO_ISO[team.tla?.toUpperCase()]
+    if (iso) return iso
     if (team.area?.flag) {
       const m = team.area.flag.match(/\/([A-Za-z-]+)\.svg/i)
       if (m) return m[1].toLowerCase()
     }
-    const iso = TLA_TO_ISO[team.tla?.toUpperCase()]
-    return iso ?? team.tla?.toLowerCase().slice(0, 2) ?? ''
+    return team.tla?.toLowerCase().slice(0, 2) ?? ''
   }
 
   return {
